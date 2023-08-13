@@ -18,6 +18,7 @@ const config: Config = {
         skyBlue: "#8EA7E9",
         grayBlue: "#3E5E0FF",
         primaryCream: "#FFF2F2",
+        primaryBlack: "#333B47",
       },
     },
   },
