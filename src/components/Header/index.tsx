@@ -2,6 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Button from "../UI/Button";
 
 interface NavLink {
   id: string;
@@ -17,6 +19,8 @@ const navigationLinks: NavLink[] = [
 ];
 
 const Header = () => {
+  const router = useRouter();
+
   return (
     <header className="fixed z-50 w-full bg-white">
       <div className="max-w-[1200px] px-10 py-6 mx-auto flex items-center justify-between">
@@ -36,13 +40,13 @@ const Header = () => {
               ))}
             </ul>
           </nav>
-          <button
+          <Button
             type="button"
-            className="bg-white text-darkBlue hover:bg-darkBlue hover:text-white py-3 px-8 text-sm font-semibold rounded-lg border-[2px] border-darkBlue"
-            onClick={() => {}}
+            variants="outline"
+            onClick={() => router.push("login")}
           >
             Login
-          </button>
+          </Button>
         </div>
       </div>
     </header>

@@ -8,6 +8,7 @@ import TypewriterComponent from "typewriter-effect";
 import heroImage1 from "../../../public/images/hero/hero-image-1.jpg";
 import heroImage2 from "../../../public/images/hero/hero-image-2.jpg";
 import heroImage3 from "../../../public/images/hero/hero-image-3.jpg";
+import Button from "../UI/Button";
 
 const Hero = () => {
   const router = useRouter();
@@ -111,13 +112,13 @@ const Hero = () => {
           Undang orang-orang terdekat dalam momen kebahagiaan pernikahan Anda
           dengan dengan cara yang efektif dan efisien.
         </p>
-        <button
-          className="bg-darkBlue text-white hover:brightness-95 w-[180px] py-3 px-8 text-sm font-semibold rounded-lg border-[2px] border-darkBlue"
+        <Button
           type="button"
+          variants="primary"
           onClick={() => router.push("/create")}
         >
           Buat Undangan
-        </button>
+        </Button>
       </div>
     </section>
   );
