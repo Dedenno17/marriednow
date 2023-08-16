@@ -1,9 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Button from "../UI/Button";
+import { useAppDispatch, useAppSelector } from "@/features/hooks";
+import { userProfile } from "@/features/user/actions";
+import UserComponent from "./UserComponent";
 
 interface NavLink {
   id: string;
@@ -14,12 +17,24 @@ interface NavLink {
 // ARRAY OF NAV LINKS
 const navigationLinks: NavLink[] = [
   { id: "nl1", name: "Home", slug: "/" },
+  { id: "nl3", name: "Products", slug: "/products" },
   { id: "nl2", name: "About Us", slug: "/about" },
-  { id: "nl3", name: "Contact Us", slug: "/contact" },
 ];
 
 const Header = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  // GLOBAL STATE
+  const { data: authData } = useAppSelector((state) => state.auth);
+  const { data: userData } = useAppSelector((state) => state.user);
+
+  // GET PROFILE USER IF ACCESS TOKEN NOT NULL
+  useEffect(() => {
+    if (authData.accessToken) {
+      dispatch(userProfile(authData.accessToken));
+    }
+  }, [authData, dispatch]);
 
   return (
     <header className="fixed z-50 w-full bg-white">
@@ -40,13 +55,18 @@ const Header = () => {
               ))}
             </ul>
           </nav>
-          <Button
-            type="button"
-            variants="outline"
-            onClick={() => router.push("login")}
-          >
-            Login
-          </Button>
+
+          {!userData ? (
+            <Button
+              type="button"
+              variants="outline"
+              onClick={() => router.push("login")}
+            >
+              Login
+            </Button>
+          ) : (
+            <UserComponent name={userData.username} email={userData.email} />
+          )}
         </div>
       </div>
     </header>

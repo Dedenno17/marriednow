@@ -11,6 +11,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   value: string;
   onChange: (e: any) => void;
   label?: string;
+  invalid: boolean;
 }
 
 const InputField: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const InputField: React.FC<Props> = ({
   label,
   value,
   onChange,
+  invalid,
 }) => {
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -35,7 +37,9 @@ const InputField: React.FC<Props> = ({
         id={id}
         name={name}
         placeholder={placeholder}
-        className="w-full py-4 px-6 border-[1px] border-black/20 rounded-lg text-xs outline-none bg-white"
+        className={`w-full py-4 px-6 border-[1px] rounded-lg text-xs outline-none bg-white ${
+          invalid ? "border-red-500" : "border-black/20"
+        }`}
         value={value}
         onChange={onChange}
       />

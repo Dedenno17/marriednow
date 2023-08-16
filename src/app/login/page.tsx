@@ -1,20 +1,76 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "@/components/UI/Button";
 import InputField from "@/components/UI/InputField";
 import Sprinkle from "@/icons/Sprinkle.svg";
+import { useAppDispatch, useAppSelector } from "@/features/hooks";
+import { login } from "@/features/auth/actions";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  // GLOBAL STATE
+  const {
+    data: authData,
+    isLoading: loadingAuthData,
+    isError: errorAuthData,
+    errorResponse: errorMessageAuth,
+  } = useAppSelector((state) => state.auth);
+
   // LOCAL STATE
   const [username, setUsername] = useState<string>("");
+  const [invalidUsername, setInvalidUsername] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
+  const [invalidPassWord, setInvalidPassword] = useState<boolean>(false);
+  const [invalidErrorMessage, setInvalidErrorMessage] = useState<null | string>(
+    null
+  );
 
   // FUNCTION SUBMIT
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // validation
+    const validUsername = username.trim().length !== 0;
+    const validPassword = password.trim().length !== 0;
+
+    // check if valid
+    if (!validUsername) {
+      setInvalidUsername(true);
+      setInvalidPassword(false);
+      setInvalidErrorMessage("Username is Invalid!");
+      return;
+    } else if (!validPassword) {
+      setInvalidPassword(true);
+      setInvalidUsername(false);
+      setInvalidErrorMessage("Password is Invalid!");
+      return;
+    }
+
+    setInvalidPassword(false);
+    setInvalidUsername(false);
+    setInvalidErrorMessage(null);
+
+    // payload user
+    const payload = {
+      username,
+      password,
+    };
+
+    // login
+    dispatch(login(payload));
   };
+
+  // REDIRECT TO HOME PAGE IF LOGIN SUCCESS
+  useEffect(() => {
+    if (authData.accessToken) {
+      router.push("/");
+    }
+  }, [authData, router]);
 
   return (
     <div className="w-full min-h-screen bg-red-300 flex items-stretch">
@@ -41,6 +97,7 @@ const Login = () => {
               placeholder="Enter Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              invalid={invalidUsername}
             />
             <InputField
               label="Password"
@@ -50,12 +107,17 @@ const Login = () => {
               placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              invalid={invalidPassWord}
             />
             <Button type="submit" className="w-full" variants="primary">
-              Login
+              {loadingAuthData ? "Loading ..." : "Login"}
             </Button>
           </form>
-          <div className="w-full h-6 flex items-center text-sm text-red-400"></div>
+
+          {/* error message */}
+          <div className="w-full h-6 flex items-center text-sm text-red-400">
+            {invalidErrorMessage || errorMessageAuth?.response?.data?.message}
+          </div>
         </div>
       </div>
     </div>
