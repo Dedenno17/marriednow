@@ -1,13 +1,19 @@
 "use client";
 
-import Header from "@/components/Header";
-import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import "./globals.css";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Provider } from "react-redux";
 import store from "../features/store";
+import Cookies from "js-cookie";
+import { useAppDispatch } from "@/features/hooks";
+import { userProfile } from "@/features/user/actions";
+import { refreshToken } from "@/features/auth/actions";
+import { AppProvider } from "@/context";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,16 +31,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathName = usePathname();
+  // const dispatch = useAppDispatch();
+
+  // PERSIST LOGIN WHEN REFRESH
+  // useEffect(() => {
+  //   const cookie = Cookies.get("mnut");
+  //   if (cookie) {
+  //     dispatch(userProfile(cookie));
+  //   }
+  // }, [dispatch]);
+
+  // // REFRESH ACCESS TOKEN IN EVERY 15 MINUTES
+  // useEffect(() => {
+  //   const refreshTokenInterval = setInterval(() => {
+  //     dispatch(refreshToken());
+  //   }, 14 * 60 * 1000);
+
+  //   return () => clearInterval(refreshTokenInterval);
+  // }, [dispatch]);
 
   return (
     <html lang="en">
-      <Provider store={store}>
-        <body className={inter.className}>
-          {pathName !== "/login" && <Header />}
-          {children}
-          <Footer />
-        </body>
-      </Provider>
+      <body className={inter.className}>
+        <Provider store={store}>
+          <AppProvider>
+            {pathName !== "/login" && <Header />}
+            {children}
+            <Footer />
+          </AppProvider>
+        </Provider>
+      </body>
     </html>
   );
 }
