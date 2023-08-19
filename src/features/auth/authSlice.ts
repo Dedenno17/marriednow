@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { login } from "./actions";
+import { login, refreshToken } from "./actions";
 
 // INTERFACE INITIAL STATE VALUE
 interface InitialState {
@@ -39,6 +39,27 @@ export const authSlice = createSlice({
       })
       .addCase(
         login.fulfilled,
+        (state, action: PayloadAction<{ accessToken: string }>) => {
+          state.isError = false;
+          state.isLoading = false;
+          state.errorResponse = "";
+          state.data.accessToken = action.payload.accessToken;
+        }
+      )
+      .addCase(refreshToken.pending, (state) => {
+        state.isError = false;
+        state.isLoading = true;
+      })
+      .addCase(
+        refreshToken.rejected,
+        (state, action: PayloadAction<unknown>) => {
+          state.isError = true;
+          state.isLoading = false;
+          state.errorResponse = action.payload;
+        }
+      )
+      .addCase(
+        refreshToken.fulfilled,
         (state, action: PayloadAction<{ accessToken: string }>) => {
           state.isError = false;
           state.isLoading = false;
