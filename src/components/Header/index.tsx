@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Button from "../UI/Button";
 import { useAppDispatch, useAppSelector } from "@/features/hooks";
 import { userProfile } from "@/features/user/actions";
@@ -17,13 +17,14 @@ interface NavLink {
 // ARRAY OF NAV LINKS
 const navigationLinks: NavLink[] = [
   { id: "nl1", name: "Home", slug: "/" },
-  { id: "nl3", name: "Products", slug: "/products" },
+  { id: "nl3", name: "Themes", slug: "/themes" },
   { id: "nl2", name: "About Us", slug: "/about" },
 ];
 
 const Header = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const pathName = usePathname();
 
   // GLOBAL STATE
   const { data: authData } = useAppSelector((state) => state.auth);
@@ -37,7 +38,11 @@ const Header = () => {
   }, [authData, dispatch]);
 
   return (
-    <header className="fixed z-50 w-full bg-white">
+    <header
+      className={`z-50 w-full bg-white ${
+        pathName !== "/login" ? "fixed" : "hidden"
+      }`}
+    >
       <div className="max-w-[1200px] px-10 py-6 mx-auto flex items-center justify-between">
         {/* LOGO */}
         <Link href="/">

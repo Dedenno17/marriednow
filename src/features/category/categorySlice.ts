@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { userProfile } from "./actions";
-import { User } from "@/types";
+import { CategoryResponse } from "@/types";
+import { getAllCategory } from "./actions/index";
 
 // INTERFACE INITIAL STATE VALUE
 interface InitialState {
-  data: User | null;
+  data: null | CategoryResponse;
   isLoading: boolean;
   isError: boolean;
   errorResponse: any | null;
@@ -19,18 +19,18 @@ const initialStateValue: InitialState = {
   errorResponse: null,
 };
 
-export const userSlice = createSlice({
-  name: "user",
+export const categorySlice = createSlice({
+  name: "category",
   initialState: initialStateValue,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(userProfile.pending, (state) => {
+      .addCase(getAllCategory.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
       })
       .addCase(
-        userProfile.rejected,
+        getAllCategory.rejected,
         (state, action: PayloadAction<unknown>) => {
           state.isError = true;
           state.isLoading = false;
@@ -38,8 +38,8 @@ export const userSlice = createSlice({
         }
       )
       .addCase(
-        userProfile.fulfilled,
-        (state, action: PayloadAction<User | any>) => {
+        getAllCategory.fulfilled,
+        (state, action: PayloadAction<CategoryResponse>) => {
           state.isLoading = false;
           state.isError = false;
           state.errorResponse = "";
@@ -49,5 +49,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const SelectUserSlice = (state: RootState) => state.user;
-export default userSlice.reducer;
+export const SelectCategorySlice = (state: RootState) => state.category;
+export default categorySlice.reducer;

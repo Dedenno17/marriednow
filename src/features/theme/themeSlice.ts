@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { userProfile } from "./actions";
-import { User } from "@/types";
+import { getAllTheme } from "./actions";
+import { ThemeResponse } from "@/types";
 
 // INTERFACE INITIAL STATE VALUE
 interface InitialState {
-  data: User | null;
+  data: null | ThemeResponse;
   isLoading: boolean;
   isError: boolean;
   errorResponse: any | null;
@@ -19,18 +19,18 @@ const initialStateValue: InitialState = {
   errorResponse: null,
 };
 
-export const userSlice = createSlice({
-  name: "user",
+export const themeSlice = createSlice({
+  name: "theme",
   initialState: initialStateValue,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(userProfile.pending, (state) => {
+      .addCase(getAllTheme.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
       })
       .addCase(
-        userProfile.rejected,
+        getAllTheme.rejected,
         (state, action: PayloadAction<unknown>) => {
           state.isError = true;
           state.isLoading = false;
@@ -38,8 +38,8 @@ export const userSlice = createSlice({
         }
       )
       .addCase(
-        userProfile.fulfilled,
-        (state, action: PayloadAction<User | any>) => {
+        getAllTheme.fulfilled,
+        (state, action: PayloadAction<ThemeResponse>) => {
           state.isLoading = false;
           state.isError = false;
           state.errorResponse = "";
@@ -49,5 +49,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const SelectUserSlice = (state: RootState) => state.user;
-export default userSlice.reducer;
+export const SelectThemeSlice = (state: RootState) => state.theme;
+export default themeSlice.reducer;

@@ -8,11 +8,15 @@ import {
 // REDUCERS
 import authSliceReducer from "./auth/authSlice";
 import userSliceReducer from "./user/userSlice";
+import themeReducer from "./theme/themeSlice";
+import categoryReducer from "./category/categorySlice";
 
 // COMBINED ALL REDUCERS
 const reducers = combineReducers({
   auth: authSliceReducer,
+  category: categoryReducer,
   user: userSliceReducer,
+  theme: themeReducer,
 });
 
 const store = configureStore({
