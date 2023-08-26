@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { login, refreshToken } from "./actions";
+import Cookies from "js-cookie";
 
 // INTERFACE INITIAL STATE VALUE
 interface InitialState {
-  data: {
-    accessToken: null | string;
-  };
+  data: { accessToken: string | undefined };
   isLoading: boolean;
   isError: boolean;
   errorResponse: any | null;
@@ -14,9 +13,7 @@ interface InitialState {
 
 // INITIAL STATE
 const initialStateValue: InitialState = {
-  data: {
-    accessToken: null,
-  },
+  data: { accessToken: undefined },
   isLoading: false,
   isError: false,
   errorResponse: null,
@@ -25,7 +22,12 @@ const initialStateValue: InitialState = {
 export const authSlice = createSlice({
   name: "auth",
   initialState: initialStateValue,
-  reducers: {},
+  reducers: {
+    rehydrateToken: (state) => {
+      const accessCookie = Cookies.get("mnut");
+      state.data = { accessToken: accessCookie };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -43,7 +45,7 @@ export const authSlice = createSlice({
           state.isError = false;
           state.isLoading = false;
           state.errorResponse = "";
-          state.data.accessToken = action.payload.accessToken;
+          state.data = { accessToken: action.payload.accessToken };
         }
       )
       .addCase(refreshToken.pending, (state) => {
@@ -64,11 +66,12 @@ export const authSlice = createSlice({
           state.isError = false;
           state.isLoading = false;
           state.errorResponse = "";
-          state.data.accessToken = action.payload.accessToken;
+          state.data = { accessToken: action.payload.accessToken };
         }
       );
   },
 });
 
+export const { rehydrateToken } = authSlice.actions;
 export const SelectAuthSlice = (state: RootState) => state.auth;
 export default authSlice.reducer;

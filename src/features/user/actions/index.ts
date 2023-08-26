@@ -8,7 +8,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 // GET PROFILE USER
 export const userProfile = createAsyncThunk<User, string>(
   "user/userProfile",
-  async (payload, thunkApi) => {
+  async (payload, thunkAPI) => {
     try {
       const response = await axios.get(`${BASE_URL}/auth/profile`, {
         headers: {
@@ -20,7 +20,7 @@ export const userProfile = createAsyncThunk<User, string>(
       const data = await response.data;
       return data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
