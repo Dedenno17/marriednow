@@ -37,8 +37,8 @@ const SimpleMinimalistMap = () => {
               className="text-sm font-thin text-black/40 w-[70%]"
               style={montserrat.style}
             >
-              THE TRIBRATA DARMAWANGSA, Jl. Darmawangsa III no. 2, RW. 1, Pulo,
-              Kebayoran Baru Jakarta Selatan 12160
+              {/* THE TRIBRATA DARMAWANGSA, Jl. Darmawangsa III no. 2, RW. 1, Pulo,
+              Kebayoran Baru Jakarta Selatan 12160 */}
             </p>
             <button
               type="button"
