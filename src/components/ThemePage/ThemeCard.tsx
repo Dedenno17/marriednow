@@ -6,12 +6,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Button from "../UI/Button";
 import { GiAlliedStar } from "react-icons/gi";
+import { useRouter } from "next/navigation";
 
 interface Props {
   item: Theme;
 }
 
 const ThemeCard: React.FC<Props> = ({ item }) => {
+  const router = useRouter();
+
   // GLOBAL STATE
   const { data: categoryData } = useAppSelector((state) => state.category);
 
@@ -56,7 +59,12 @@ const ThemeCard: React.FC<Props> = ({ item }) => {
           {category?.title}
         </div>
         <div className="flex flex-col gap-2">
-          <Button variants="outline" type="button" className="w-full">
+          <Button
+            variants="outline"
+            type="button"
+            className="w-full"
+            onClick={() => router.push(`/example?preset_id=${item._id}`)}
+          >
             Lihat Contoh
           </Button>
           <Button variants="primary" type="button" className="w-full">

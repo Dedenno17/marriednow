@@ -22,6 +22,12 @@ const config: Config = {
         silver: "#C0C0C0",
         Gold: "#FFD700",
         platinum: "##E5E4E2",
+        simpleMinimalist: {
+          gray: "#9e9f9e",
+          black: "383b42",
+          white: "#e4e3df",
+          red: "#e4a99f",
+        },
       },
     },
   },

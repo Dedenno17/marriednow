@@ -19,7 +19,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
 
   // PERSIST LOGIN WHEN REFRESH
   useEffect(() => {
-    dispatch(rehydrateToken());
+    const accesTokenCookies = Cookies.get("mnut");
+    if (accesTokenCookies) {
+      dispatch(rehydrateToken());
+    }
+
+    dispatch(refreshToken());
   }, [dispatch]);
 
   //   REFRESHING TOKEN IN EVERY 15 MINUTE

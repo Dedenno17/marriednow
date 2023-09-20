@@ -23,10 +23,8 @@ const Themes = () => {
 
   // INVOKE ALL THEME
   useEffect(() => {
-    if (authData.accessToken) {
-      dispatch(getAllTheme(currentPage));
-      dispatch(getAllCategory(currentPage));
-    }
+    dispatch(getAllTheme(currentPage));
+    dispatch(getAllCategory(currentPage));
   }, [dispatch, authData, currentPage]);
 
   return (

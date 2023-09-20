@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer
       className={`w-full bg-primaryCream py-6 ${
-        pathName !== "/login" ? "flex" : "hidden"
+        pathName !== "/login" && pathName !== "/example" ? "flex" : "hidden"
       }`}
     >
       <span className="m-auto text-xs text-primaryBlack/80">

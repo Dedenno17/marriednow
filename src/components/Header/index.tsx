@@ -40,7 +40,7 @@ const Header = () => {
   return (
     <header
       className={`z-50 w-full bg-white ${
-        pathName !== "/login" ? "fixed" : "hidden"
+        pathName !== "/login" && pathName !== "/example" ? "fixed" : "hidden"
       }`}
     >
       <div className="max-w-[1200px] px-10 py-6 mx-auto flex items-center justify-between">
