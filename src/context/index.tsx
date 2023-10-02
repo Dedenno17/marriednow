@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import { userProfile } from "@/features/user/actions";
 import { refreshToken } from "@/features/auth/actions";
 import { rehydrateToken } from "@/features/auth/authSlice";
+import jwt_decode from "jwt-decode";
+import { formatDistanceToNowStrict, isFuture } from "date-fns";
 
 // CREATE CONTEXT
 export const AppContext = createContext({});
@@ -16,25 +18,42 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { data: userData } = useAppSelector((state) => state.user);
+  const { data: authData } = useAppSelector((state) => state.auth);
 
   // PERSIST LOGIN WHEN REFRESH
   useEffect(() => {
-    const accesTokenCookies = Cookies.get("mnut");
-    if (accesTokenCookies) {
-      dispatch(rehydrateToken());
+    dispatch(rehydrateToken());
+  }, [dispatch]);
+
+  //   REFRESHING TOKEN IN EVERY 14 MINUTE
+  useEffect(() => {
+    if (Object.keys(authData).length === 0) return;
+
+    const accessToken = authData.accessToken;
+    let refreshTokenInterval: any;
+
+    if (accessToken) {
+      const { exp } = jwt_decode<any>(accessToken);
+      const tokenExpire = new Date(exp * 1000);
+
+      if (isFuture(tokenExpire)) {
+        const timesLeft = formatDistanceToNowStrict(tokenExpire, {
+          unit: "second",
+        });
+        const secondsLeft = parseInt(timesLeft.split(" ")[0]) - 10;
+
+        refreshTokenInterval = setInterval(() => {
+          console.log(secondsLeft);
+          console.log("refresh");
+          dispatch(refreshToken());
+        }, secondsLeft * 1000);
+      } else {
+        dispatch(refreshToken());
+      }
     }
 
-    dispatch(refreshToken());
-  }, [dispatch]);
-
-  //   REFRESHING TOKEN IN EVERY 15 MINUTE
-  useEffect(() => {
-    const refreshTokenInterval = setInterval(() => {
-      dispatch(refreshToken());
-    }, 14 * 60000);
-
     return () => clearInterval(refreshTokenInterval);
-  }, [dispatch]);
+  }, [dispatch, authData]);
 
   useEffect(() => {
     const accessCookie = Cookies.get("mnut");
