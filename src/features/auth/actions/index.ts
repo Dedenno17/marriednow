@@ -29,7 +29,7 @@ export const login = createAsyncThunk<{ accessToken: string }, LoginPayload>(
       const data = await response.data;
 
       // set expire to 15 minutes
-      const expireTime = new Date(new Date().getTime() + 15 * 60 * 1000);
+      const expireTime = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
       // set access token to cookie
       Cookies.set("mnut", data.accessToken, {
@@ -61,7 +61,7 @@ export const refreshToken = createAsyncThunk<
     const data = await response.data;
 
     // set expire to 15 minutes
-    const expireTime = new Date(new Date().getTime() + 15 * 60 * 1000);
+    const expireTime = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
     // set access token to cookie
     Cookies.set("mnut", data.accessToken, {
