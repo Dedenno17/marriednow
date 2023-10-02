@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import { Provider } from "react-redux";
 import store from "../features/store";
 import { AppProvider } from "@/context";
-import SpinnerLoading from "@/components/UI/SpinnerLoading";
 
 const inter = Inter({
   subsets: ["latin"],
