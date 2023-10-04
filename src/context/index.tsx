@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useAppDispatch, useAppSelector } from "@/features/hooks";
-import { createContext, ReactNode, useContext, useEffect } from "react";
-import Cookies from "js-cookie";
-import { userProfile } from "@/features/user/actions";
-import { refreshToken } from "@/features/auth/actions";
-import { rehydrateToken } from "@/features/auth/authSlice";
-import jwt_decode from "jwt-decode";
-import { formatDistanceToNowStrict, isFuture } from "date-fns";
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { userProfile } from '@/features/user/actions';
+import { refreshToken } from '@/features/auth/actions';
+import { rehydrateToken } from '@/features/auth/authSlice';
+import jwt_decode from 'jwt-decode';
+import { formatDistanceToNowStrict, isFuture } from 'date-fns';
 
 // CREATE CONTEXT
 export const AppContext = createContext({});
@@ -26,6 +26,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   }, [dispatch]);
 
   //   REFRESHING TOKEN IN EVERY 14 MINUTE
+  //   REFRESHING TOKEN IN EVERY 14 MINUTE
   useEffect(() => {
     if (Object.keys(authData).length === 0) return;
 
@@ -38,13 +39,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
 
       if (isFuture(tokenExpire)) {
         const timesLeft = formatDistanceToNowStrict(tokenExpire, {
-          unit: "second",
+          unit: 'second',
         });
-        const secondsLeft = parseInt(timesLeft.split(" ")[0]) - 10;
+        const secondsLeft = parseInt(timesLeft.split(' ')[0]) - 10;
 
         refreshTokenInterval = setInterval(() => {
-          console.log(secondsLeft);
-          console.log("refresh");
           dispatch(refreshToken());
         }, secondsLeft * 1000);
       } else {
@@ -56,7 +55,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   }, [dispatch, authData]);
 
   useEffect(() => {
-    const accessCookie = Cookies.get("mnut");
+    const accessCookie = Cookies.get('mnut');
     if (!userData && accessCookie) {
       dispatch(userProfile(accessCookie));
     }
@@ -71,7 +70,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
 export const useAppContext = () => {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error("useAppContext must be used within app provider");
+    throw new Error('useAppContext must be used within app provider');
   }
   return context;
 };
