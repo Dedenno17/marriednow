@@ -44,11 +44,11 @@
     "lint-staged": "^14.0.1"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
+    ".{js,jsx,ts,tsx}": [
       "eslint --max-warnings=0",
       "prettier -w"
     ],
-    "src/**/*.{json,css,scss,md,webmanifest}": [
+    ".{json,css,scss,md,webmanifest}": [
       "prettier -w"
     ]
   }
