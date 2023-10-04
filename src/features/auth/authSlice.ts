@@ -25,6 +25,8 @@ export const authSlice = createSlice({
   reducers: {
     rehydrateToken: (state) => {
       const accessCookie = Cookies.get("mnut");
+
+      if (!accessCookie) return;
       state.data = { accessToken: accessCookie };
     },
   },
