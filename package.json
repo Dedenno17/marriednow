@@ -9,6 +9,11 @@
     "lint": "next lint",
     "prepare": "husky install"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lint-staged"
+    }
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@svgr/webpack": "^8.0.1",
@@ -40,6 +45,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
-    "@commitlint/config-conventional": "^17.6.7"
+    "@commitlint/config-conventional": "^17.6.7",
+    "lint-staged": "^14.0.1"
   }
 }
