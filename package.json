@@ -9,11 +9,6 @@
     "lint": "next lint",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npx lint-staged"
-    }
-  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@svgr/webpack": "^8.0.1",
